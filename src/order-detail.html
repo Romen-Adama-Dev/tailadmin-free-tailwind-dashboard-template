@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Detalle de pedido | Dielca Kiosko Backoffice</title>
+  </head>
+  <body
+    data-app-page="order-detail"
+    x-data="{ page: 'orderDetail', 'loaded': true, 'darkMode': false, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
+    x-init="
+         darkMode = JSON.parse(localStorage.getItem('darkMode'));
+         $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
+    :class="{'dark bg-gray-900': darkMode === true}"
+  >
+    <include src="./partials/preloader.html"></include>
+
+    <div class="flex h-screen overflow-hidden">
+      <include src="./partials/sidebar.html"></include>
+
+      <div
+        class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto"
+      >
+        <include src="./partials/overlay.html" />
+        <include src="./partials/header.html" />
+
+        <main>
+          <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
+            <div x-data="{ pageName: `Detalle de pedido`}">
+              <include src="./partials/breadcrumb.html" />
+            </div>
+
+            <div
+              class="mb-6 hidden rounded-2xl border border-warning-200 bg-warning-50 px-4 py-3 text-sm text-warning-700 dark:border-warning-500/20 dark:bg-warning-500/10 dark:text-warning-300"
+              data-alert-region
+            ></div>
+
+            <div class="space-y-6" data-order-detail-root>
+              <section
+                class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] lg:p-6"
+              >
+                <div
+                  class="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between"
+                >
+                  <div class="space-y-4">
+                    <div
+                      class="inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 text-sm font-medium text-brand-600 dark:bg-brand-500/10 dark:text-brand-300"
+                    >
+                      Pedido
+                    </div>
+                    <div>
+                      <h1
+                        class="text-2xl font-semibold text-gray-800 dark:text-white/90"
+                        data-order-title
+                      >
+                        Cargando pedido...
+                      </h1>
+                      <p
+                        class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+                        data-order-subtitle
+                      >
+                        Obteniendo trazabilidad operativa y datos base.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex flex-wrap items-center gap-3">
+                    <a
+                      href="orders.html"
+                      class="inline-flex items-center justify-center rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-white/[0.03]"
+                    >
+                      Volver al listado
+                    </a>
+                    <span data-order-status-badge></span>
+                  </div>
+                </div>
+
+                <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-4">
+                  <div
+                    class="rounded-2xl border border-gray-100 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900"
+                  >
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                      Fecha de alta
+                    </p>
+                    <p
+                      class="mt-2 text-base font-semibold text-gray-800 dark:text-white/90"
+                      data-order-created-at
+                    >
+                      -
+                    </p>
+                  </div>
+                  <div
+                    class="rounded-2xl border border-gray-100 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900"
+                  >
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                      Sede
+                    </p>
+                    <p
+                      class="mt-2 text-base font-semibold text-gray-800 dark:text-white/90"
+                      data-order-site
+                    >
+                      -
+                    </p>
+                  </div>
+                  <div
+                    class="rounded-2xl border border-gray-100 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900"
+                  >
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                      Importe
+                    </p>
+                    <p
+                      class="mt-2 text-base font-semibold text-gray-800 dark:text-white/90"
+                      data-order-total
+                    >
+                      -
+                    </p>
+                  </div>
+                  <div
+                    class="rounded-2xl border border-gray-100 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900"
+                  >
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                      Lineas
+                    </p>
+                    <p
+                      class="mt-2 text-base font-semibold text-gray-800 dark:text-white/90"
+                      data-order-item-count
+                    >
+                      -
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              <section class="grid grid-cols-1 gap-6 xl:grid-cols-3">
+                <div
+                  class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] xl:col-span-1"
+                >
+                  <h3
+                    class="mb-4 text-lg font-semibold text-gray-800 dark:text-white/90"
+                  >
+                    Contacto y operativa
+                  </h3>
+                  <div class="space-y-4">
+                    <div>
+                      <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Contacto
+                      </p>
+                      <p
+                        class="mt-1 text-sm font-medium text-gray-800 dark:text-white/90"
+                        data-order-contact-name
+                      >
+                        -
+                      </p>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Telefono
+                      </p>
+                      <p
+                        class="mt-1 text-sm font-medium text-gray-800 dark:text-white/90"
+                        data-order-contact-phone
+                      >
+                        -
+                      </p>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Origen
+                      </p>
+                      <p
+                        class="mt-1 text-sm font-medium text-gray-800 dark:text-white/90"
+                        data-order-source
+                      >
+                        -
+                      </p>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Validacion de stock
+                      </p>
+                      <p
+                        class="mt-1 text-sm font-medium text-gray-800 dark:text-white/90"
+                        data-order-stock-validation
+                      >
+                        -
+                      </p>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Notificacion
+                      </p>
+                      <p
+                        class="mt-1 text-sm font-medium text-gray-800 dark:text-white/90"
+                        data-order-notification
+                      >
+                        -
+                      </p>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Ultima actualizacion
+                      </p>
+                      <p
+                        class="mt-1 text-sm font-medium text-gray-800 dark:text-white/90"
+                        data-order-updated-at
+                      >
+                        -
+                      </p>
+                    </div>
+                    <div>
+                      <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Notas
+                      </p>
+                      <p
+                        class="mt-1 whitespace-pre-wrap text-sm font-medium text-gray-800 dark:text-white/90"
+                        data-order-notes
+                      >
+                        Sin notas registradas.
+                      </p>
+                    </div>
+                    <div
+                      class="rounded-2xl border border-gray-100 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900"
+                    >
+                      <div class="flex items-start justify-between gap-3">
+                        <div>
+                          <p
+                            class="text-sm font-semibold text-gray-800 dark:text-white/90"
+                          >
+                            Flujo operativo
+                          </p>
+                          <p
+                            class="mt-1 text-sm text-gray-500 dark:text-gray-400"
+                          >
+                            Confirma cada paso interno del pedido sin salir del
+                            backoffice.
+                          </p>
+                        </div>
+                        <span data-order-status-badge-inline></span>
+                      </div>
+                      <div
+                        class="mt-4 flex flex-wrap gap-3"
+                        data-order-actions
+                      ></div>
+                      <p
+                        class="mt-3 hidden text-sm text-success-700 dark:text-success-400"
+                        data-order-action-feedback
+                      ></p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="space-y-6 xl:col-span-2">
+                  <div
+                    class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]"
+                  >
+                    <div
+                      class="mb-4 flex items-center justify-between gap-3"
+                    >
+                      <h3
+                        class="text-lg font-semibold text-gray-800 dark:text-white/90"
+                      >
+                        Lineas del pedido
+                      </h3>
+                      <p
+                        class="text-sm text-gray-500 dark:text-gray-400"
+                        data-order-items-caption
+                      >
+                        Detalle de articulos.
+                      </p>
+                    </div>
+                    <div class="overflow-x-auto">
+                      <table class="min-w-full">
+                        <thead>
+                          <tr
+                            class="border-b border-gray-100 dark:border-gray-800"
+                          >
+                            <th class="px-4 py-3 text-left text-theme-xs font-medium text-gray-500 dark:text-gray-400">
+                              Linea
+                            </th>
+                            <th class="px-4 py-3 text-left text-theme-xs font-medium text-gray-500 dark:text-gray-400">
+                              Articulo
+                            </th>
+                            <th class="px-4 py-3 text-left text-theme-xs font-medium text-gray-500 dark:text-gray-400">
+                              Cantidad
+                            </th>
+                            <th class="px-4 py-3 text-left text-theme-xs font-medium text-gray-500 dark:text-gray-400">
+                              Importe
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody
+                          class="divide-y divide-gray-100 dark:divide-gray-800"
+                          data-order-items-body
+                        ></tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div
+                    class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]"
+                  >
+                    <h3
+                      class="mb-4 text-lg font-semibold text-gray-800 dark:text-white/90"
+                    >
+                      JSON original
+                    </h3>
+                    <pre
+                      class="custom-scrollbar max-h-[440px] overflow-auto rounded-2xl bg-gray-50 p-4 text-xs text-gray-700 dark:bg-gray-900 dark:text-gray-300"
+                      data-order-raw-json
+                    ></pre>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <div
+      class="modal fixed left-0 top-0 z-99999 hidden min-h-screen w-full justify-center overflow-y-auto overflow-x-hidden bg-gray-400/50 px-4 py-4 backdrop-blur-[32px] lg:py-[120px]"
+      data-status-modal
+    >
+      <div class="absolute inset-0" data-status-modal-close></div>
+      <div
+        class="relative flex w-full max-w-[620px] flex-col rounded-3xl bg-white p-6 shadow-theme-lg dark:bg-gray-900 lg:p-8"
+      >
+        <button
+          type="button"
+          class="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:bg-white/[0.05] dark:text-gray-400 dark:hover:bg-white/[0.08] dark:hover:text-gray-300"
+          data-status-modal-close
+        >
+          <span class="sr-only">Cerrar</span>
+          <svg
+            class="fill-current"
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M4.41074 4.41076C4.73618 4.08533 5.26382 4.08533 5.58926 4.41076L10 8.82151L14.4107 4.41076C14.7362 4.08533 15.2638 4.08533 15.5893 4.41076C15.9147 4.7362 15.9147 5.26384 15.5893 5.58927L11.1785 10L15.5893 14.4108C15.9147 14.7362 15.9147 15.2638 15.5893 15.5893C15.2638 15.9147 14.7362 15.9147 14.4107 15.5893L10 11.1785L5.58926 15.5893C5.26382 15.9147 4.73618 15.9147 4.41074 15.5893C4.08531 15.2638 4.08531 14.7362 4.41074 14.4108L8.82149 10L4.41074 5.58927C4.08531 5.26384 4.08531 4.7362 4.41074 4.41076Z"
+            />
+          </svg>
+        </button>
+
+        <div class="pr-10">
+          <p class="text-sm font-medium text-brand-600 dark:text-brand-300">
+            Actualizacion de estado
+          </p>
+          <h3
+            class="mt-2 text-xl font-semibold text-gray-800 dark:text-white/90"
+            data-status-modal-title
+          >
+            Confirmar accion
+          </h3>
+          <p
+            class="mt-3 text-sm text-gray-500 dark:text-gray-400"
+            data-status-modal-description
+          >
+            Revisa la accion antes de guardar cambios en el pedido.
+          </p>
+        </div>
+
+        <div
+          class="mt-6 rounded-2xl border border-gray-100 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-800/50"
+        >
+          <p class="text-xs uppercase tracking-wide text-gray-400">
+            Pedido afectado
+          </p>
+          <p
+            class="mt-2 text-base font-semibold text-gray-800 dark:text-white/90"
+            data-status-modal-order
+          >
+            -
+          </p>
+        </div>
+
+        <div class="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+          <button
+            type="button"
+            class="inline-flex items-center justify-center rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-white/[0.03]"
+            data-status-modal-close
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="inline-flex items-center justify-center rounded-lg bg-brand-500 px-4 py-3 text-sm font-medium text-white shadow-theme-xs hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
+            data-status-modal-confirm
+          >
+            Confirmar
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

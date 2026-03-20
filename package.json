@@ -4,8 +4,10 @@
   "description": "TailAdmin is a high-quality, open-source, and free Tailwind CSS admin template that is perfect for creating data-rich backends, powerful web applications and dashboard-admin projects.",
   "main": "index.js",
   "scripts": {
-    "start": "webpack serve --open --config webpack.config.js",
-    "build": "webpack --config webpack.config.js",
+    "dev": "webpack serve --host 0.0.0.0 --mode development --config webpack.config.js",
+    "build": "webpack --mode production --config webpack.config.js",
+    "serve": "node server/index.js",
+    "start": "npm run build && npm run serve",
     "sort": "npx prettier --write src"
   },
   "keywords": [],
@@ -40,16 +42,20 @@
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
+    "@fontsource/outfit": "^5.2.6",
     "@alpinejs/persist": "^3.14.1",
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/list": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
+    "@supabase/supabase-js": "^2.49.8",
     "alpinejs": "^3.14.1",
     "apexcharts": "^3.51.0",
     "chart.js": "^4.4.6",
+    "dotenv": "^16.6.1",
     "dropzone": "^6.0.0-beta.2",
+    "express": "^5.1.0",
     "flatpickr": "^4.6.13",
     "fullcalendar": "^6.1.15",
     "jsvectormap": "^1.6.0",

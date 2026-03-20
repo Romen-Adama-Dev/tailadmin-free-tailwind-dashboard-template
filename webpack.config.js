@@ -5,6 +5,13 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const INCLUDE_PATTERN =
   /<include\s+src=["'](.+?)["']\s*\/?>\s*(?:<\/include>)?/gis;
+const APP_PAGES = [
+  "index.html",
+  "orders.html",
+  "order-detail.html",
+  "sites.html",
+  "404.html",
+];
 
 const processNestedHtml = (content, loaderContext, dir = null) =>
   !INCLUDE_PATTERN.test(content)
@@ -19,14 +26,11 @@ const processNestedHtml = (content, loaderContext, dir = null) =>
         );
       });
 
-// HTML generation
-const paths = [];
 const generateHTMLPlugins = () =>
   glob.sync("./src/*.html").map((dir) => {
     const filename = path.basename(dir);
-
-    if (filename !== "404.html") {
-      paths.push(filename);
+    if (!APP_PAGES.includes(filename)) {
+      return null;
     }
 
     return new HtmlWebpackPlugin({
@@ -35,80 +39,86 @@ const generateHTMLPlugins = () =>
       favicon: `./src/images/favicon.ico`,
       inject: "body",
     });
-  });
+  })
+  .filter(Boolean);
 
-module.exports = {
-  mode: "development",
-  entry: "./src/js/index.js",
-  devServer: {
-    static: {
-      directory: path.join(__dirname, "./build"),
-    },
-    compress: true,
-    port: 3000,
-    hot: true,
-  },
-  module: {
-    rules: [
-      {
-        test: /\.m?js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env"],
-          },
-        },
+module.exports = (_, argv = {}) => {
+  const isProduction = argv.mode === "production";
+
+  return {
+    mode: isProduction ? "production" : "development",
+    entry: "./src/js/index.js",
+    devServer: {
+      host: "0.0.0.0",
+      static: {
+        directory: path.join(__dirname, "./build"),
       },
-      {
-        test: /\.css$/i,
-        use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          {
-            loader: "postcss-loader",
+      compress: true,
+      port: 3000,
+      hot: true,
+    },
+    module: {
+      rules: [
+        {
+          test: /\.m?js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader",
             options: {
-              postcssOptions: {
-                plugins: [
-                  require("autoprefixer")({
-                    overrideBrowserslist: ["last 2 versions"],
-                  }),
-                ],
-              },
+              presets: ["@babel/preset-env"],
             },
           },
-        ],
-      },
-      {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: "asset/resource",
-      },
-      {
-        test: /\.(woff|woff2|eot|ttf|otf)$/i,
-        type: "asset/resource",
-      },
-      {
-        test: /\.html$/,
-        loader: "html-loader",
-        options: {
-          preprocessor: processNestedHtml,
         },
-      },
+        {
+          test: /\.css$/i,
+          use: [
+            MiniCssExtractPlugin.loader,
+            "css-loader",
+            {
+              loader: "postcss-loader",
+              options: {
+                postcssOptions: {
+                  plugins: [
+                    require("autoprefixer")({
+                      overrideBrowserslist: ["last 2 versions"],
+                    }),
+                  ],
+                },
+              },
+            },
+          ],
+        },
+        {
+          test: /\.(png|svg|jpg|jpeg|gif)$/i,
+          type: "asset/resource",
+        },
+        {
+          test: /\.(woff|woff2|eot|ttf|otf)$/i,
+          type: "asset/resource",
+        },
+        {
+          test: /\.html$/,
+          loader: "html-loader",
+          options: {
+            preprocessor: processNestedHtml,
+          },
+        },
+      ],
+    },
+    plugins: [
+      ...generateHTMLPlugins(),
+      new MiniCssExtractPlugin({
+        filename: "style.css",
+        chunkFilename: "style.css",
+      }),
     ],
-  },
-  plugins: [
-    ...generateHTMLPlugins(),
-    new MiniCssExtractPlugin({
-      filename: "style.css",
-      chunkFilename: "style.css",
-    }),
-  ],
-  output: {
-    filename: "bundle.js",
-    path: path.resolve(__dirname, "build"),
-    clean: true,
-    assetModuleFilename: "[path][name][ext]",
-  },
-  target: "web", // fix for "browserslist" error message
-  stats: "errors-only", // suppress irrelevant log messages
+    output: {
+      filename: "bundle.js",
+      path: path.resolve(__dirname, "build"),
+      clean: true,
+      assetModuleFilename: "[path][name][ext]",
+    },
+    target: "web",
+    stats: "errors-only",
+  };
 };

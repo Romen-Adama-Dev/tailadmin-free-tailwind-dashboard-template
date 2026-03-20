@@ -1,0 +1,23 @@
+services:
+  dielca-kiosko-backoffice:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dielca-kiosko-backoffice
+    ports:
+      - "${DOCKER_BIND_HOST:-0.0.0.0}:${PORT:-3000}:${PORT:-3000}"
+    environment:
+      APP_NAME: ${APP_NAME:-Dielca Kiosko Backoffice}
+      HOST: 0.0.0.0
+      PORT: ${PORT:-3000}
+      LOCAL_TIME_ZONE: ${LOCAL_TIME_ZONE:-Atlantic/Canary}
+      CURRENCY: ${CURRENCY:-EUR}
+      DATA_SOURCE: ${DATA_SOURCE:-supabase}
+      SUPABASE_URL: ${SUPABASE_URL:-}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY:-}
+      SUPABASE_ORDERS_TABLE: ${SUPABASE_ORDERS_TABLE:-kiosk_orders}
+      SUPABASE_CREATED_AT_COLUMN: ${SUPABASE_CREATED_AT_COLUMN:-created_at}
+      SUPABASE_FETCH_LIMIT: ${SUPABASE_FETCH_LIMIT:-500}
+      DATA_CACHE_TTL_MS: ${DATA_CACHE_TTL_MS:-30000}
+      SITES_JSON: ${SITES_JSON:-}
+    restart: unless-stopped

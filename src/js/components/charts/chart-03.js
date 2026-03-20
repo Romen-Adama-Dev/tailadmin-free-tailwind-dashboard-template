@@ -1,36 +1,45 @@
 import ApexCharts from "apexcharts";
 
-// ===== chartThree
-const chart03 = () => {
-  const chartThreeOptions = {
+let chartInstance;
+
+const chart03 = (dataset = { categories: [], created: [], resolved: [] }) => {
+  const chartSelector = document.querySelector("#chartThree");
+
+  if (!chartSelector) {
+    return;
+  }
+
+  if (chartInstance) {
+    chartInstance.destroy();
+  }
+
+  chartInstance = new ApexCharts(chartSelector, {
     series: [
       {
-        name: "Sales",
-        data: [180, 190, 170, 160, 175, 165, 170, 205, 230, 210, 240, 235],
+        name: "Creados",
+        data: dataset.created,
       },
       {
-        name: "Revenue",
-        data: [40, 30, 50, 40, 55, 40, 70, 100, 110, 120, 150, 140],
+        name: "Resueltos",
+        data: dataset.resolved,
       },
     ],
     legend: {
-      show: false,
+      show: true,
       position: "top",
       horizontalAlign: "left",
     },
-    colors: ["#465FFF", "#9CB9FF"],
+    colors: ["#465FFF", "#12B76A"],
     chart: {
       fontFamily: "Outfit, sans-serif",
       height: 310,
       type: "area",
-      toolbar: {
-        show: false,
-      },
+      toolbar: { show: false },
     },
     fill: {
       gradient: {
         enabled: true,
-        opacityFrom: 0.55,
+        opacityFrom: 0.35,
         opacityTo: 0,
       },
     },
@@ -38,76 +47,27 @@ const chart03 = () => {
       curve: "straight",
       width: ["2", "2"],
     },
-
-    markers: {
-      size: 0,
-    },
-    labels: {
-      show: false,
-      position: "top",
-    },
+    markers: { size: 0 },
     grid: {
-      xaxis: {
-        lines: {
-          show: false,
-        },
-      },
-      yaxis: {
-        lines: {
-          show: true,
-        },
-      },
+      xaxis: { lines: { show: false } },
+      yaxis: { lines: { show: true } },
     },
-    dataLabels: {
-      enabled: false,
-    },
-    tooltip: {
-      x: {
-        format: "dd MMM yyyy",
-      },
-    },
+    dataLabels: { enabled: false },
     xaxis: {
       type: "category",
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
-      axisBorder: {
-        show: false,
-      },
-      axisTicks: {
-        show: false,
-      },
+      categories: dataset.categories,
+      axisBorder: { show: false },
+      axisTicks: { show: false },
       tooltip: false,
     },
     yaxis: {
       title: {
-        style: {
-          fontSize: "0px",
-        },
+        style: { fontSize: "0px" },
       },
     },
-  };
+  });
 
-  const chartSelector = document.querySelectorAll("#chartThree");
-
-  if (chartSelector.length) {
-    const chartThree = new ApexCharts(
-      document.querySelector("#chartThree"),
-      chartThreeOptions,
-    );
-    chartThree.render();
-  }
+  chartInstance.render();
 };
 
 export default chart03;
